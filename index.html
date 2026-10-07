@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рефлексия: Итоги урока</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f9;
+            --text-color: #2c3e50;
+            --green-grad: linear-gradient(to top, #00b09b, #96c93d);
+            --orange-grad: linear-gradient(to top, #f12711, #f5af19);
+            --red-grad: linear-gradient(to top, #cb2d3e, #ef473a);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .balloons-container {
+            display: flex;
+            gap: 60px;
+            margin-bottom: 50px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .balloon-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .balloon-outer {
+            position: relative;
+            width: 180px;
+            height: 240px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+            transition: filter 0.5s ease;
+        }
+
+        .balloon {
+            width: 100%;
+            height: 100%;
+            border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
+            border: 4px solid #2c3e50;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .knot {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 22px solid #2c3e50;
+            margin-top: -8px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        #fill1 { background: var(--green-grad); }
+        #fill2 { background: var(--orange-grad); }
+        #fill3 { background: var(--red-grad); }
+
+        .face {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .percent-label {
+            margin-top: 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 250px;
+            padding: 25px 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transition: transform 0.1s, box-shadow 0.2s, background 0.3s;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .btn:active {
+            transform: scale(0.96) translateY(4px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-green { background: #27ae60; }
+        .btn-green:hover { background: #219653; }
+        
+        .btn-yellow { background: #f39c12; color: #fff; }
+        .btn-yellow:hover { background: #e67e22; }
+        
+        .btn-red { background: #e74c3c; }
+        .btn-red:hover { background: #c0392b; }
+
+        .reset-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            padding: 10px 20px;
+            background: #bdc3c7;
+            color: #2c3e50;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .reset-btn:hover {
+            background: #95a5a6;
+        }
+
+        @media (max-width: 768px) {
+            .balloons-container { gap: 20px; }
+            .balloon-outer { width: 120px; height: 160px; }
+            .btn { font-size: 1.1rem; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="reset-btn" onclick="resetAll()">Сбросить</button>
+
+    <h1>Как прошел урок?</h1>
+
+    <div class="balloons-container">
+        <!-- Шарик 1 (Всё понял) -->
+        <div class="balloon-wrapper">
+            <div class="balloon-outer" id="glow1">
+                <div class="balloon">
+                    <div class="fill" id="fill1"></div>
+                    <svg viewBox="0 0 100 100" class="face">
+                        <path d="M25 35 Q35 25 45 35" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M55 35 Q65 25 75 35" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="38" cy="48" rx="7" ry="10" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <ellipse cx="62" cy="48" rx="7" ry="10" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <circle cx="41" cy="48" r="3" fill="#2c3e50"/>
+                        <circle cx="59" cy="48" r="3" fill="#2c3e50"/>
+                        <path d="M30 65 Q50 85 70 65 Z" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <path d="M40 73 Q50 83 60 73" fill="#ff7675" />
+                    </svg>
+                </div>
+                <div class="knot"></div>
+            </div>
+            <div class="percent-label" id="perc1">0%</div>
+        </div>
+
+        <!-- Шарик 2 (Есть вопросы) -->
+        <div class="balloon-wrapper">
+            <div class="balloon-outer" id="glow2">
+                <div class="balloon">
+                    <div class="fill" id="fill2"></div>
+                    <svg viewBox="0 0 100 100" class="face">
+                        <path d="M28 32 Q35 28 42 35" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M58 35 Q65 25 72 30" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="38" cy="45" rx="9" ry="12" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <ellipse cx="62" cy="48" rx="6" ry="9" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <circle cx="42" cy="45" r="3" fill="#2c3e50"/>
+                        <circle cx="59" cy="49" r="2.5" fill="#2c3e50"/>
+                        <path d="M30 65 Q50 80 70 62" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M55 69 v 12 a 5 5 0 0 1 -10 0 v -10 Z" fill="#ff7675" stroke="#2c3e50" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="knot"></div>
+            </div>
+            <div class="percent-label" id="perc2">0%</div>
+        </div>
+
+        <!-- Шарик 3 (Ничего не понял) -->
+        <div class="balloon-wrapper">
+            <div class="balloon-outer" id="glow3">
+                <div class="balloon">
+                    <div class="fill" id="fill3"></div>
+                    <svg viewBox="0 0 100 100" class="face">
+                        <path d="M30 35 Q40 28 50 35" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M50 35 Q60 28 70 35" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="40" cy="48" rx="8" ry="11" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <ellipse cx="60" cy="48" rx="8" ry="11" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <circle cx="40" cy="48" r="2.5" fill="#2c3e50"/>
+                        <circle cx="60" cy="48" r="2.5" fill="#2c3e50"/>
+                        <path d="M35 72 Q 40 67 45 72 T 55 72 T 65 72" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="knot"></div>
+            </div>
+            <div class="percent-label" id="perc3">0%</div>
+        </div>
+    </div>
+
+    <div class="buttons-container">
+        <button class="btn btn-green" onclick="addEnergy(1)">Всё понял<br>Всё получилось</button>
+        <button class="btn btn-yellow" onclick="addEnergy(2)">Есть вопросы<br>Не всё понятно</button>
+        <button class="btn btn-red" onclick="addEnergy(3)">Ничего не понял<br>Было сложно</button>
+    </div>
+
+    <!-- Скрипт подключения к Firebase и логика работы -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyC0NsmOtSrBuYWrn5hgIgZp3WolqSWWykQ",
+        authDomain: "ball-1c2ef.firebaseapp.com",
+        databaseURL: "https://ball-1c2ef-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "ball-1c2ef",
+        storageBucket: "ball-1c2ef.firebasestorage.app",
+        messagingSenderId: "334860511827",
+        appId: "1:334860511827:web:5fc2e9e0f982aca8db34a6",
+        measurementId: "G-QKZY3TNHM9"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const balloonsRef = ref(db, 'balloons');
+
+      const energyStep = 10;
+      const glowColors = {
+          1: 'drop-shadow(0 0 25px rgba(0, 176, 155, 0.8))',
+          2: 'drop-shadow(0 0 25px rgba(245, 175, 25, 0.8))',
+          3: 'drop-shadow(0 0 25px rgba(239, 71, 58, 0.8))'
+      };
+
+      onValue(balloonsRef, (snapshot) => {
+          const data = snapshot.val() || { 1: 0, 2: 0, 3: 0 };
+          [1, 2, 3].forEach(id => {
+              const level = data[id] || 0;
+              document.getElementById(`fill${id}`).style.height = `${level}%`;
+              document.getElementById(`perc${id}`).innerText = `${level}%`;
+              
+              const outerElement = document.getElementById(`glow${id}`);
+              outerElement.style.filter = level >= 70 ? glowColors[id] : 'drop-shadow(0 10px 15px rgba(0,0,0,0.15))';
+          });
+      });
+
+      window.addEnergy = function(id) {
+          const ballRef = ref(db, `balloons/${id}`);
+          runTransaction(ballRef, (currentValue) => {
+              let newVal = (currentValue || 0) + energyStep;
+              return newVal > 100 ? 100 : newVal;
+          });
+      };
+
+      window.resetAll = function() {
+          runTransaction(balloonsRef, () => {
+              return { 1: 0, 2: 0, 3: 0 };
+          });
+      };
+    </script>
+</body>
+</html>
